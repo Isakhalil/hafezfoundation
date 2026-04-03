@@ -316,13 +316,16 @@
       );
 
       if (match) {
-        message.style.color = "rgb(52, 120, 72)";
-        message.textContent = "Login successful. (Next: send them to your AI page.)";
-        // later: window.location.href = "dashboard.html";
-      } else {
-        message.style.color = "rgb(129, 38, 35)";
-        message.textContent = "Invalid email or password.";
-      }
+  message.style.color = "rgb(52, 120, 72)";
+  message.textContent = "Login successful. Redirecting...";
+  
+  setTimeout(() => {
+    window.location.href = "dashboard.html";
+  }, 700);
+} else {
+  message.style.color = "rgb(129, 38, 35)";
+  message.textContent = "Invalid email or password.";
+}
     });
   </script>
 </body>
