@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Circle of Abiding Wisdom Dashboard</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --coaw-blue-color: 48 59 107;
+      --coaw-red-color: 129 38 35;
+      --coaw-secondary-color: 226 220 198;
+      --coaw-secondary-light-color: 245 240 220;
+      --coaw-primary-color: var(--coaw-blue-color);
+      --coaw-page-bg: 250 248 241;
+      --coaw-surface-1: 255 255 255;
+      --coaw-surface-2: 247 244 236;
+      --coaw-border-soft: 48 59 107;
+      --coaw-border-strong: 34 45 92;
+      --coaw-text-body: 44 50 68;
+      --coaw-text-muted: 66 76 117;
+      --coaw-accent-soft: 230 199 141;
+
+      --bg: rgb(var(--coaw-page-bg));
+      --surface: rgb(var(--coaw-surface-1));
+      --surface-soft: rgb(var(--coaw-surface-2));
+      --text: rgb(var(--coaw-text-body));
+      --muted: rgb(var(--coaw-text-muted));
+      --brand: rgb(var(--coaw-primary-color));
+      --border: rgba(var(--coaw-border-soft), 0.24);
+      --border-strong: rgba(var(--coaw-border-strong), 0.42);
+      --gold: rgb(var(--coaw-accent-soft));
+
+      --shadow-sm: 0 8px 20px rgba(19, 24, 43, 0.06);
+      --shadow-md: 0 20px 40px rgba(19, 24, 43, 0.08);
+
+      --radius-sm: 12px;
+      --radius-md: 18px;
+      --radius-lg: 24px;
+
+      --text-xs: 12px;
+      --text-sm: 14px;
+      --text-base: 16px;
+      --text-lg: 18px;
+      --text-xl: 28px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      font-family: "Inter", system-ui, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0) 30%),
+        var(--bg);
+      color: var(--text);
+    }
+
+    .app-shell {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px;
+      gap: 16px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255,255,255,0.72);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 14px 16px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      background: linear-gradient(145deg, rgba(var(--coaw-primary-color), 0.95), rgba(var(--coaw-primary-color), 0.78));
+      color: white;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
+    }
+
+    .brand-copy h1 {
+      margin: 0;
+      font-size: var(--text-lg);
+      line-height: 1.1;
+    }
+
+    .brand-copy p {
+      margin: 4px 0 0;
+      font-size: var(--text-sm);
+      color: var(--muted);
+    }
+
+    .logout-btn {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: var(--text-sm);
+      cursor: pointer;
+    }
+
+    .chat-frame {
+      display: grid;
+      grid-template-rows: auto 1fr;
+      min-height: 0;
+      background: rgba(255,255,255,0.7);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+    }
+
+    .chat-intro {
+      padding: 22px 22px 14px;
+      border-bottom: 1px solid rgba(var(--coaw-border-soft), 0.14);
+      background: linear-gradient(to bottom, rgba(255,255,255,0.85), rgba(255,255,255,0.55));
+    }
+
+    .chat-intro h2 {
+      margin: 0;
+      font-size: var(--text-xl);
+      line-height: 1.05;
+      font-family: "Source Serif 4", Georgia, serif;
+      color: var(--brand);
+    }
+
+    .chat-intro p {
+      margin: 10px 0 0;
+      font-size: var(--text-sm);
+      color: var(--muted);
+      max-width: 72ch;
+    }
+
+    .messages {
+      padding: 22px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      background: linear-gradient(to bottom, rgba(247,244,236,0.32), rgba(255,255,255,0.12));
+    }
+
+    .bubble {
+      max-width: 760px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      line-height: 1.6;
+      font-size: var(--text-base);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .bubble.assistant {
+      align-self: flex-start;
+      background: var(--surface);
+      border: 1px solid rgba(var(--coaw-border-soft), 0.18);
+    }
+
+    .bubble.user {
+      align-self: flex-end;
+      background: rgba(var(--coaw-primary-color), 0.95);
+      color: white;
+      border: 1px solid rgba(var(--coaw-primary-color), 0.95);
+    }
+
+    .bubble-label {
+      font-size: var(--text-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      opacity: 0.72;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .composer-wrap {
+      padding: 16px 20px 20px;
+      background: rgba(255,255,255,0.88);
+      border-top: 1px solid rgba(var(--coaw-border-soft), 0.14);
+    }
+
+    .composer {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: end;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 12px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    textarea {
+      resize: none;
+      min-height: 62px;
+      max-height: 180px;
+      border: none;
+      outline: none;
+      background: transparent;
+      font: inherit;
+      color: var(--text);
+      line-height: 1.5;
+      padding: 8px 8px 8px 10px;
+    }
+
+    .send-btn {
+      align-self: stretch;
+      min-height: 48px;
+      border: none;
+      border-radius: 16px;
+      padding: 0 18px;
+      background: var(--brand);
+      color: white;
+      font-size: var(--text-sm);
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 14px 26px rgba(var(--coaw-primary-color), 0.24);
+    }
+
+    .helper-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 10px;
+      font-size: var(--text-xs);
+      color: var(--muted);
+    }
+
+    @media (max-width: 720px) {
+      .app-shell { padding: 12px; }
+      .topbar { align-items: flex-start; }
+      .brand-copy h1 { font-size: 16px; }
+      .chat-intro h2 { font-size: 24px; }
+      .composer { grid-template-columns: 1fr; }
+      .send-btn { width: 100%; }
+      .helper-row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand-wrap">
+        <div class="brand-mark">C</div>
+        <div class="brand-copy">
+          <h1>Circle of Abiding Wisdom</h1>
+          <p>Private member conversation space</p>
+        </div>
+      </div>
+      <button class="logout-btn" onclick="window.location.href='index.html'">Log out</button>
+    </header>
+
+    <main class="chat-frame">
+      <section class="chat-intro">
+        <h2>Ask your question</h2>
+        <p>
+          This is a practice dashboard. Right now it simulates an assistant reply, but later this same
+          interface can send messages to a real Llama-powered backend.
+        </p>
+      </section>
+
+      <section class="messages" id="messages">
+        <article class="bubble assistant">
+          <div class="bubble-label">Circle of Abiding Wisdom</div>
+          <div>
+            Welcome. Ask a question, reflect on a text, or explore a theme. This preview uses a fake
+            response so you can practice the interface before wiring in a real model.
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <footer class="composer-wrap">
+      <form class="composer" id="chatForm">
+        <textarea
+          id="chatInput"
+          placeholder="Ask a question about a teaching, text, or theme..."
+          required
+        ></textarea>
+        <button type="submit" class="send-btn">Send</button>
+      </form>
+      <div class="helper-row">
+        <span>Practice mode only — no real AI is connected yet.</span>
+        <span>Next step: wire this to a backend API.</span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const form = document.getElementById("chatForm");
+    const input = document.getElementById("chatInput");
+    const messages = document.getElementById("messages");
+
+    function addMessage(role, label, text) {
+      const article = document.createElement("article");
+      article.className = `bubble ${role}`;
+      article.innerHTML = `
+        <div class="bubble-label">${label}</div>
+        <div>${text}</div>
+      `;
+      messages.appendChild(article);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const text = input.value.trim();
+      if (!text) return;
+
+      addMessage("user", "You", text);
+      input.value = "";
+
+      setTimeout(() => {
+        const fakeReply =
+          "This is a practice response from the Circle of Abiding Wisdom interface. Later, this reply can come from a real Llama model through a backend API, with system instructions that shape the tone and style of the response.";
+        addMessage("assistant", "Circle of Abiding Wisdom", fakeReply);
+      }, 700);
+    });
+  </script>
+</body>
+</html>
